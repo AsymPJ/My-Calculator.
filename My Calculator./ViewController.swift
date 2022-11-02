@@ -29,15 +29,25 @@ class ViewController: UIViewController{
     func clearScreenAndMemory(){
         resultValue = ""
         resultOperation.text = ""
-        firstOp = 0
+        firstOp = 1
         secondOp = 0
         state = 0
+    }
+    func oppositeResult(){
+        if resultValue == ""{
+            resultOperation.text = "-"
+            firstOp = -1
+        }else{
+            var temp : Double = 0
+            temp = (Double(resultValue)!) * (-1)
+            resultValue = String(temp)
+        }
     }
     
     func addValue (_ valueS: String){
         if state == 0{
             if valueS == "/" || valueS == "x" || valueS == "-" || valueS == "+" || valueS == "="{
-                firstOp = Double(resultValue)!
+                firstOp = (Double(resultValue)!) * firstOp
                 operatorS = valueS
                 resultValue = ""
                 state = 1
@@ -58,66 +68,76 @@ class ViewController: UIViewController{
         }
         else if state == 1 {
             if valueS == "/" || valueS == "x" || valueS == "-" || valueS == "+" || valueS == "="{
-                guard let secondOp = Double(resultValue) else{
+                if resultValue != ""{
+                    /*guard let secondOp = Double(resultValue) else{
+                    
+                     return
+                     }*/
+                    if (operatorS == "+"){
+                        secondOp = Double(resultValue)!
+                        operatorS = valueS
+                        totalToShow = firstOp + secondOp
+                        firstOp = totalToShow
+                        resultValue = ""
+                        if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
+                            resultOperation.text = String(format: "%.0f", totalToShow)
+                        }else{
+                            resultOperation.text = String(totalToShow)
+                        }
+                    }
+                    else if (operatorS == "-"){
+                        secondOp = Double(resultValue)!
+                        operatorS = valueS
+                        totalToShow = firstOp - secondOp
+                        firstOp = totalToShow
+                        resultValue = ""
+                        if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
+                            resultOperation.text = String(format: "%.0f", totalToShow)
+                        }else{
+                            resultOperation.text = String(totalToShow)
+                        }
+                    }
+                    else if (operatorS == "/"){
+                        operatorS = valueS
+                        secondOp = Double(resultValue)!
+                        totalToShow = firstOp / secondOp
+                        firstOp = totalToShow
+                        resultValue = ""
+                        if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
+                            resultOperation.text = String(format: "%.0f", totalToShow)
+                        }else{
+                            resultOperation.text = String(totalToShow)
+                        }
+                    }
+                    else if (operatorS == "x"){
+                        operatorS = valueS
+                        secondOp = Double(resultValue)!
+                        totalToShow = firstOp * secondOp
+                        firstOp = totalToShow
+                        resultValue = ""
+                        if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
+                            resultOperation.text = String(format: "%.0f", totalToShow)
+                        }else{
+                            resultOperation.text = String(totalToShow)
+                        }
+                        
+                    }
+                    else if operatorS == "="{
+                        totalToShow = Double(resultValue)!
+                        firstOp = totalToShow
+                        resultOperation.text = resultValue
+                        state = 0
+                    }
+                }else{
                     let alert = UIAlertController(title: "Fatal Error", message:"Can not type two operator in a row", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(alert, animated: true)
-                    return
-                }
-                if (operatorS == "+"){
-                    operatorS = valueS
-                    totalToShow = firstOp + secondOp
-                    firstOp = totalToShow
-                    resultValue = ""
-                    if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
-                        resultOperation.text = String(format: "%.0f", totalToShow)
-                    }else{
-                        resultOperation.text = String(totalToShow)
-                    }
-                }
-                else if (operatorS == "-"){
-                    operatorS = valueS
-                    totalToShow = firstOp - secondOp
-                    firstOp = totalToShow
-                    resultValue = ""
-                    if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
-                        resultOperation.text = String(format: "%.0f", totalToShow)
-                    }else{
-                        resultOperation.text = String(totalToShow)
-                    }
-                }
-                else if (operatorS == "/"){
-                    operatorS = valueS
-                    totalToShow = firstOp / secondOp
-                    firstOp = totalToShow
-                    resultValue = ""
-                    if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
-                        resultOperation.text = String(format: "%.0f", totalToShow)
-                    }else{
-                        resultOperation.text = String(totalToShow)
-                    }
-                }
-                else if (operatorS == "x"){
-                    operatorS = valueS
-                    totalToShow = firstOp * secondOp
-                    firstOp = totalToShow
-                    resultValue = ""
-                    if totalToShow.truncatingRemainder(dividingBy: 1) == 0{
-                        resultOperation.text = String(format: "%.0f", totalToShow)
-                    }else{
-                        resultOperation.text = String(totalToShow)
-                    }
-                    
-                }
-                else if operatorS == "="{
-                    totalToShow = Double(resultValue)!
-                    firstOp = totalToShow
-                    resultOperation.text = resultValue
                 }
             }
             else{
                 resultValue = resultValue + valueS
                 resultOperation.text = resultValue
+                
             }
         }
     }
