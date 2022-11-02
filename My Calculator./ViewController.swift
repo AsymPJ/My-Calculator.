@@ -102,8 +102,8 @@ class ViewController: UIViewController{
                         }
                     }
                     else if (operatorS == "/"){
-                        operatorS = valueS
                         secondOp = Double(resultValue)!
+                        operatorS = valueS
                         totalToShow = firstOp / secondOp
                         firstOp = totalToShow
                         resultValue = ""
@@ -114,8 +114,8 @@ class ViewController: UIViewController{
                         }
                     }
                     else if (operatorS == "x"){
-                        operatorS = valueS
                         secondOp = Double(resultValue)!
+                        operatorS = valueS
                         totalToShow = firstOp * secondOp
                         firstOp = totalToShow
                         resultValue = ""
