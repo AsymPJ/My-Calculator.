@@ -46,8 +46,11 @@ class ViewController: UIViewController{
     
     func addValue (_ valueS: String){
         if state == 0{
-            if valueS == "/" || valueS == "x" || valueS == "-" || valueS == "+" || valueS == "="{
-                firstOp = (Double(resultValue)!) * firstOp
+            if (valueS == "/" || valueS == "x" || valueS == "-" || valueS == "+") {
+                if operatorS != "="{
+                    firstOp = (Double(resultValue)!) * firstOp
+                }
+                
                 operatorS = valueS
                 resultValue = ""
                 state = 1
@@ -62,6 +65,7 @@ class ViewController: UIViewController{
                 resultValue = ""
             }
             else {
+                operatorS = ""
                 resultValue = resultValue + valueS
                 resultOperation.text = resultValue
             }
@@ -120,17 +124,16 @@ class ViewController: UIViewController{
                         }else{
                             resultOperation.text = String(totalToShow)
                         }
-                        
                     }
-                    else if operatorS == "="{
-                        totalToShow = Double(resultValue)!
-                        firstOp = totalToShow
-                        resultOperation.text = resultValue
+                    if valueS == "="{
+                        operatorS = "="
                         state = 0
                     }
-                }else{
+                
+                }
+                else{
                     let alert = UIAlertController(title: "Fatal Error", message:"Can not type two operator in a row", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    alert.addAction(UIAlertAction(title: "Type a number", style: .default))
                     self.present(alert, animated: true)
                 }
             }
