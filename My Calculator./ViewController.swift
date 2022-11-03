@@ -66,6 +66,7 @@ class ViewController: UIViewController{
             }
             else {
                 operatorS = ""
+                firstOp = 1
                 resultValue = resultValue + valueS
                 resultOperation.text = resultValue
             }
